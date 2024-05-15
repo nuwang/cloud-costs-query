@@ -15,9 +15,6 @@ COPY frontend/ .
 # Build the Angular app
 RUN npm run build --prod
 
-# Expose the application port
-EXPOSE 8000
-
 FROM python:3.12-slim
 
 WORKDIR /app
@@ -33,4 +30,4 @@ COPY --from=frontend-build /app/dist/frontend /app/static/
 EXPOSE 8080
 
 # Set the entry point to start the backend
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
