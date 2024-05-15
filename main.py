@@ -15,7 +15,7 @@ async def query_runtime_90th_percentile(tool_name: str):
 
     query = f"""
     SELECT APPROX_QUANTILES(runtime_seconds, 100)[OFFSET(90)] AS runtime_90th_percentile
-    FROM `anvil_cost_modeling.cost_info.job_metrics`
+    FROM `anvil-cost-modeling.cost_info.job_metrics`
     WHERE tool_id = @tool_name
     """
     
