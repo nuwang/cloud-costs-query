@@ -1,13 +1,19 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from google.cloud import bigquery
 from google.cloud.bigquery import QueryJobConfig
 
 app = FastAPI()
 
+# Mount the static directory
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 @app.get("/", include_in_schema=False)
 async def root():
-    return get_swagger_ui_html(openapi_url=app.openapi_url, title=app.title + " - Swagger UI")
+    with open("static/index.html") as f:
+        return HTMLResponse(content=f.read(), status_code=200)
+
 
 @app.get("/runtime_90th_percentile/")
 async def query_runtime_90th_percentile(tool_name: str):

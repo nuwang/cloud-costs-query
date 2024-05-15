@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <span>Cloud Cost Modelling</span>
+</mat-toolbar>
+
+<div style="margin: 20px;">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>90th Percentile Runtime (s)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (submit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Tool Name</mat-label>
+          <input matInput [(ngModel)]="toolName" name="toolName" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+      </form>
+      <div style="margin-top: 20px;">
+        <canvas id="myChart" width="400" height="200"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

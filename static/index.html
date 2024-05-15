@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runtime 90th Percentile Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/chart.js"></script>
+</head>
+<body>
+    <h1>Cloud cost modelling</h1>
+    <br />
+    <h2>Runtime 90th Percentile Chart</h2>
+    <form id="toolForm">
+        <label for="toolName">Tool Name:</label>
+        <input type="text" id="toolName" name="toolName">
+        <button type="submit">Submit</button>
+    </form>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        document.getElementById('toolForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const toolName = document.getElementById('toolName').value;
+            fetch(`/runtime_90th_percentile/?tool_name=${toolName}`)
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['90th Percentile Runtime (s)'],
+                            datasets: [{
+                                label: toolName,
+                                data: [data['90th_percentile_runtime_seconds']],
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
