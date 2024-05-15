@@ -27,7 +27,10 @@ async def query_runtime_90th_percentile(tool_name: str):
 
     job = client.query(query, job_config=job_config)
 
-    results = await job.result()
+    while not job.done():
+        await asyncio.sleep(1)
+
+    results = job.result()
     runtime_90th_percentile = None
 
     for row in results:
